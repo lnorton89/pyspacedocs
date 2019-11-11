@@ -1,0 +1,1835 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.1" />
+<title>pyspace.fold API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pyspace.fold</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import math
+import numpy as np
+from .util import *
+
+class FoldPlane:
+        def __init__(self, n, d=0.0):
+                self.n = set_global_vec3(n)
+                self.d = set_global_float(d)
+
+        def fold(self, p):
+                n = get_global(self.n)
+                d = get_global(self.d)
+                p[:3] -= 2.0 * min(0.0, np.dot(p[:3], n) - d) * n
+
+        def unfold(self, p, q):
+                n = get_global(self.n)
+                d = get_global(self.d)
+                if np.dot(p[:3], n) - d &lt; 0.0:
+                        q[:3] -= 2.0 * (np.dot(q[:3], n) - d) * n
+
+        def glsl(self):
+                if vec3_eq(self.n, (1,0,0)):
+                        return &#39;\tp.x = abs(p.x - &#39; + float_str(self.d) + &#39;) + &#39; + float_str(self.d) + &#39;;\n&#39;
+                elif vec3_eq(self.n, (0,1,0)):
+                        return &#39;\tp.y = abs(p.y - &#39; + float_str(self.d) + &#39;) + &#39; + float_str(self.d) + &#39;;\n&#39;
+                elif vec3_eq(self.n, (0,0,1)):
+                        return &#39;\tp.z = abs(p.z - &#39; + float_str(self.d) + &#39;) + &#39; + float_str(self.d) + &#39;;\n&#39;
+                elif vec3_eq(self.n, (-1,0,0)):
+                        return &#39;\tp.x = -abs(p.x + &#39; + float_str(self.d) + &#39;) - &#39; + float_str(self.d) + &#39;;\n&#39;
+                elif vec3_eq(self.n, (0,-1,0)):
+                        return &#39;\tp.y = -abs(p.y + &#39; + float_str(self.d) + &#39;) - &#39; + float_str(self.d) + &#39;;\n&#39;
+                elif vec3_eq(self.n, (0,0,-1)):
+                        return &#39;\tp.z = -abs(p.z + &#39; + float_str(self.d) + &#39;) - &#39; + float_str(self.d) + &#39;;\n&#39;
+                else:
+                        return &#39;\tplaneFold(p, &#39; + vec3_str(self.n) + &#39;, &#39; + float_str(self.d) + &#39;);\n&#39;
+
+&#39;&#39;&#39;
+EQUIVALENT FOLD:
+  FoldPlane((1, 0, 0), c_x))
+  FoldPlane((0, 1, 0), c_y))
+  FoldPlane((0, 0, 1), c_z))
+&#39;&#39;&#39;
+class FoldAbs:
+        def __init__(self, c=(0,0,0)):
+                self.c = set_global_vec3(c)
+
+        def fold(self, p):
+                c = get_global(self.c)
+                p[:3] = np.abs(p[:3] - c) + c
+
+        def unfold(self, p, q):
+                c = get_global(self.c)
+                if p[0] &lt; c[0]: q[0] = 2*c[0] - q[0]
+                if p[1] &lt; c[1]: q[1] = 2*c[0] - q[1]
+                if p[2] &lt; c[2]: q[2] = 2*c[0] - q[2]
+
+        def glsl(self):
+                if vec3_eq(self.c, (0,0,0)):
+                        return &#39;\tp.xyz = abs(p.xyz);\n&#39;
+                else:
+                        return &#39;\tabsFold(p, &#39; + vec3_str(self.c) + &#39;);\n&#39;
+
+&#39;&#39;&#39;
+EQUIVALENT FOLD:
+  FoldPlane((inv_sqrt2, inv_sqrt2, 0)))
+  FoldPlane((inv_sqrt2, 0, inv_sqrt2)))
+  FoldPlane((0, inv_sqrt2, inv_sqrt2)))
+&#39;&#39;&#39;
+class FoldSierpinski:
+        def __init__(self):
+                pass
+
+        def fold(self, p):
+                if p[0] + p[1] &lt; 0.0:
+                        p[[0,1]] = -p[[1,0]]
+                if p[0] + p[2] &lt; 0.0:
+                        p[[0,2]] = -p[[2,0]]
+                if p[1] + p[2] &lt; 0.0:
+                        p[[2,1]] = -p[[1,2]]
+
+        def unfold(self, p, q):
+                mx = max(-p[1], p[0])
+                if max(p[1], -p[0]) + max(-mx, p[2]) &lt; 0.0:
+                        q[[2,1]] = -q[[1,2]]
+                if mx + p[2] &lt; 0.0:
+                        q[[0,2]] = -q[[2,0]]
+                if p[0] + p[1] &lt; 0.0:
+                        q[[0,1]] = -q[[1,0]]
+
+        def glsl(self):
+                return &#39;\tsierpinskiFold(p);\n&#39;
+
+&#39;&#39;&#39;
+EQUIVALENT FOLD:
+  FoldPlane((inv_sqrt2, -inv_sqrt2, 0)))
+  FoldPlane((inv_sqrt2, 0, -inv_sqrt2)))
+  FoldPlane((0, inv_sqrt2, -inv_sqrt2)))
+&#39;&#39;&#39;
+class FoldMenger:
+        def __init__(self):
+                pass
+
+        def fold(self, p):
+                if p[0] &lt; p[1]:
+                        p[[0,1]] = p[[1,0]]
+                if p[0] &lt; p[2]:
+                        p[[0,2]] = p[[2,0]]
+                if p[1] &lt; p[2]:
+                        p[[2,1]] = p[[1,2]]
+
+        def unfold(self, p, q):
+                mx = max(p[0], p[1])
+                if min(p[0], p[1]) &lt; min(mx, p[2]):
+                        q[[2,1]] = q[[1,2]]
+                if mx &lt; p[2]:
+                        q[[0,2]] = q[[2,0]]
+                if p[0] &lt; p[1]:
+                        q[[0,1]] = q[[1,0]]
+
+        def glsl(self):
+                return &#39;\tmengerFold(p);\n&#39;
+
+class FoldScaleTranslate:
+        def __init__(self, s=1.0, t=(0,0,0)):
+                self.s = set_global_float(s)
+                self.t = set_global_vec3(t)
+
+        def fold(self, p):
+                p[:] *= get_global(self.s)
+                p[:3] += get_global(self.t)
+
+        def unfold(self, p, q):
+                q[:3] -= get_global(self.t)
+                q[:] /= get_global(self.s)
+
+        def glsl(self):
+                ret_str = &#39;&#39;
+                if self.s != 1.0:
+                        if isinstance(self.s, (float, int)) and self.s &gt;= 0:
+                                ret_str += &#39;\tp *= &#39; + float_str(self.s) + &#39;;\n&#39;
+                        else:
+                                ret_str += &#39;\tp.xyz *= &#39; + float_str(self.s) + &#39;;\n&#39;
+                                ret_str += &#39;\tp.w *= abs(&#39; + float_str(self.s) + &#39;);\n&#39;
+                if not np.array_equal(self.t, np.zeros((3,), dtype=np.float32)):
+                        ret_str += &#39;\tp.xyz += &#39; + vec3_str(self.t) + &#39;;\n&#39;
+                return ret_str
+
+class FoldScaleOrigin:
+        def __init__(self, s=1.0):
+                self.s = set_global_float(s)
+                self.o = set_global_vec3((0,0,0))
+
+        def fold(self, p):
+                p[:] = p*get_global(self.s) + self.o
+
+        def unfold(self, p, q):
+                q[:] = (q - self.o[:3]) / get_global(self.s)
+
+        def glsl(self):
+                ret_str = &#39;&#39;
+                if self.s != 1.0:
+                        ret_str += &#39;\tp = p*&#39; + float_str(self.s) + &#39;;p.w = abs(p.w);p += o;\n&#39;
+                else:
+                        ret_str += &#39;\tp += o;\n&#39;
+                return ret_str
+
+class FoldBox:
+        def __init__(self, r=(1.0,1.0,1.0)):
+                self.r = set_global_vec3(r)
+
+        def fold(self, p):
+                r = get_global(self.r)
+                p[:3] = np.clip(p[:3], -r, r)*2 - p[:3]
+
+        def unfold(self, p, q):
+                r = get_global(self.r)
+                if p[0] &lt; -r[0]: q[0] = -2*r[0] - q[0]
+                if p[1] &lt; -r[1]: q[1] = -2*r[1] - q[1]
+                if p[2] &lt; -r[2]: q[2] = -2*r[2] - q[2]
+                if p[0] &gt; r[0]: q[0] = 2*r[0] - q[0]
+                if p[1] &gt; r[1]: q[1] = 2*r[1] - q[1]
+                if p[2] &gt; r[2]: q[2] = 2*r[2] - q[2]
+
+        def glsl(self):
+                return &#39;\tboxFold(p,&#39; + vec3_str(self.r) + &#39;);\n&#39;
+
+class FoldSphere:
+        def __init__(self, min_r=0.5, max_r=1.0):
+                self.min_r = set_global_float(min_r)
+                self.max_r = set_global_float(max_r)
+
+        def fold(self, p):
+                max_r = get_global(self.max_r)
+                min_r = get_global(self.min_r)
+                r2 = np.dot(p[:3], p[:3])
+                p[:] *= max(max_r / max(min_r, r2), 1.0)
+
+        def unfold(self, p, q):
+                max_r = get_global(self.max_r)
+                min_r = get_global(self.min_r)
+                r2 = np.dot(p[:3], p[:3])
+                q[:] /= max(max_r / max(min_r, r2), 1.0)
+
+        def glsl(self):
+                return &#39;\tsphereFold(p,&#39; + float_str(self.min_r) + &#39;,&#39; + float_str(self.max_r) + &#39;);\n&#39;
+
+class FoldInversion:
+        def __init__(self, epsilon=1e-12):
+                self.epsilon = set_global_float(epsilon)
+
+        def fold(self, p):
+                epsilon = get_global(self.epsilon)
+                p[:] *= 1.0 / (np.dot(p[:3], p[:3]) + epsilon)
+
+        def unfold(self, p, q):
+                epsilon = get_global(self.epsilon)
+                q[:] *= (np.dot(p[:3], p[:3]) + epsilon)
+
+        def glsl(self):
+                return &#39;\tp *= 1.0 / (dot(p.xyz, p.xyz) + &#39; + float_str(self.epsilon) + &#39;);\n&#39;
+
+class FoldRotateX:
+        def __init__(self, a):
+                self.a = set_global_float(a)
+
+        def fold(self, p):
+                a = get_global(self.a)
+                s,c = math.sin(a), math.cos(a)
+                p[1], p[2] = (c*p[1] + s*p[2]), (c*p[2] - s*p[1])
+
+        def unfold(self, p, q):
+                a = get_global(self.a)
+                s,c = math.sin(-a), math.cos(-a)
+                q[1], q[2] = (c*q[1] + s*q[2]), (c*q[2] - s*q[1])
+
+        def glsl(self):
+                if isinstance(self.a, (float, int)):
+                        return &#39;\trotX(p, &#39; + float_str(math.sin(self.a)) + &#39;, &#39; + float_str(math.cos(self.a)) + &#39;);\n&#39;
+                else:
+                        return &#39;\trotX(p, &#39; + float_str(self.a) + &#39;);\n&#39;
+
+class FoldRotateY:
+        def __init__(self, a):
+                self.a = set_global_float(a)
+
+        def fold(self, p):
+                a = get_global(self.a)
+                s,c = math.sin(a), math.cos(a)
+                p[2], p[0] = (c*p[2] + s*p[0]), (c*p[0] - s*p[2])
+
+        def unfold(self, p, q):
+                a = get_global(self.a)
+                s,c = math.sin(-a), math.cos(-a)
+                q[2], q[0] = (c*q[2] + s*q[0]), (c*q[0] - s*q[2])
+
+        def glsl(self):
+                if isinstance(self.a, (float, int)):
+                        return &#39;\trotY(p, &#39; + float_str(math.sin(self.a)) + &#39;, &#39; + float_str(math.cos(self.a)) + &#39;);\n&#39;
+                else:
+                        return &#39;\trotY(p, &#39; + float_str(self.a) + &#39;);\n&#39;
+
+class FoldRotateZ:
+        def __init__(self, a):
+                self.a = set_global_float(a)
+
+        def fold(self, p):
+                a = get_global(self.a)
+                s,c = math.sin(a), math.cos(a)
+                p[0], p[1] = (c*p[0] + s*p[1]), (c*p[1] - s*p[0])
+
+        def unfold(self, p, q):
+                a = get_global(self.a)
+                s,c = math.sin(-a), math.cos(-a)
+                q[0], q[1] = (c*q[0] + s*q[1]), (c*q[1] - s*q[0])
+
+        def glsl(self):
+                if isinstance(self.a, (float, int)):
+                        return &#39;\trotZ(p, &#39; + float_str(math.sin(self.a)) + &#39;, &#39; + float_str(math.cos(self.a)) + &#39;);\n&#39;
+                else:
+                        return &#39;\trotZ(p, &#39; + float_str(self.a) + &#39;);\n&#39;
+
+class FoldRepeatX:
+        def __init__(self, m):
+                self.m = set_global_float(m)
+
+        def fold(self, p):
+                m = get_global(self.m)
+                p[0] = abs((p[0] - m/2) % m - m/2)
+
+        def unfold(self, p, q):
+                m = get_global(self.m)
+                a = (p[0] - m/2) % m - m/2
+                if a &lt; 0.0: q[0] = -q[0]
+                q[0] += p[0] - a
+
+        def glsl(self):
+                return &#39;\tp.x = abs(mod(p.x - &#39; + float_str(self.m) + &#39;/2,&#39; + float_str(self.m) + &#39;) - &#39; + float_str(self.m) + &#39;/2);\n&#39;
+
+class FoldRepeatY:
+        def __init__(self, m):
+                self.m = set_global_float(m)
+
+        def fold(self, p):
+                m = get_global(self.m)
+                p[1] = abs((p[1] - m/2) % m - m/2)
+
+        def unfold(self, p, q):
+                m = get_global(self.m)
+                a = (p[1] - m/2) % m - m/2
+                if a &lt; 0.0: q[1] = -q[1]
+                q[1] += p[1] - a
+
+        def glsl(self):
+                return &#39;\tp.y = abs(mod(p.y - &#39; + float_str(self.m) + &#39;/2,&#39; + float_str(self.m) + &#39;) - &#39; + float_str(self.m) + &#39;/2);\n&#39;
+
+class FoldRepeatZ:
+        def __init__(self, m):
+                self.m = set_global_float(m)
+
+        def fold(self, p):
+                m = get_global(self.m)
+                p[2] = abs((p[2] - m/2) % m - m/2)
+
+        def unfold(self, p, q):
+                m = get_global(self.m)
+                a = (p[2] - m/2) % m - m/2
+                if a &lt; 0.0: q[2] = -q[2]
+                q[2] += p[2] - a
+
+        def glsl(self):
+                return &#39;\tp.z = abs(mod(p.z - &#39; + float_str(self.m) + &#39;/2,&#39; + float_str(self.m) + &#39;) - &#39; + float_str(self.m) + &#39;/2);\n&#39;
+
+class FoldRepeatXYZ:
+        def __init__(self, m):
+                self.m = set_global_float(m)
+
+        def fold(self, p):
+                m = get_global(self.m)
+                p[:3] = abs((p[:3] - m/2) % m - m/2)
+
+        def unfold(self, p, q):
+                m = get_global(self.m)
+                a = (p[:3] - m/2) % m - m/2
+                if a[0] &lt; 0.0: q[0] = -q[0]
+                if a[1] &lt; 0.0: q[1] = -q[1]
+                if a[2] &lt; 0.0: q[2] = -q[2]
+                q[:3] += p[:3] - a
+
+        def glsl(self):
+                return &#39;\tp.xyz = abs(mod(p.xyz - &#39; + float_str(self.m) + &#39;/2,&#39; + float_str(self.m) + &#39;) - &#39; + float_str(self.m) + &#39;/2);\n&#39;</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pyspace.fold.FoldAbs"><code class="flex name class">
+<span>class <span class="ident">FoldAbs</span></span>
+<span>(</span><span>c=(0, 0, 0))</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FoldAbs:
+        def __init__(self, c=(0,0,0)):
+                self.c = set_global_vec3(c)
+
+        def fold(self, p):
+                c = get_global(self.c)
+                p[:3] = np.abs(p[:3] - c) + c
+
+        def unfold(self, p, q):
+                c = get_global(self.c)
+                if p[0] &lt; c[0]: q[0] = 2*c[0] - q[0]
+                if p[1] &lt; c[1]: q[1] = 2*c[0] - q[1]
+                if p[2] &lt; c[2]: q[2] = 2*c[0] - q[2]
+
+        def glsl(self):
+                if vec3_eq(self.c, (0,0,0)):
+                        return &#39;\tp.xyz = abs(p.xyz);\n&#39;
+                else:
+                        return &#39;\tabsFold(p, &#39; + vec3_str(self.c) + &#39;);\n&#39;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.fold.FoldAbs.fold"><code class="name flex">
+<span>def <span class="ident">fold</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fold(self, p):
+        c = get_global(self.c)
+        p[:3] = np.abs(p[:3] - c) + c</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldAbs.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        if vec3_eq(self.c, (0,0,0)):
+                return &#39;\tp.xyz = abs(p.xyz);\n&#39;
+        else:
+                return &#39;\tabsFold(p, &#39; + vec3_str(self.c) + &#39;);\n&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldAbs.unfold"><code class="name flex">
+<span>def <span class="ident">unfold</span></span>(<span>self, p, q)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unfold(self, p, q):
+        c = get_global(self.c)
+        if p[0] &lt; c[0]: q[0] = 2*c[0] - q[0]
+        if p[1] &lt; c[1]: q[1] = 2*c[0] - q[1]
+        if p[2] &lt; c[2]: q[2] = 2*c[0] - q[2]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.fold.FoldBox"><code class="flex name class">
+<span>class <span class="ident">FoldBox</span></span>
+<span>(</span><span>r=(1.0, 1.0, 1.0))</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FoldBox:
+        def __init__(self, r=(1.0,1.0,1.0)):
+                self.r = set_global_vec3(r)
+
+        def fold(self, p):
+                r = get_global(self.r)
+                p[:3] = np.clip(p[:3], -r, r)*2 - p[:3]
+
+        def unfold(self, p, q):
+                r = get_global(self.r)
+                if p[0] &lt; -r[0]: q[0] = -2*r[0] - q[0]
+                if p[1] &lt; -r[1]: q[1] = -2*r[1] - q[1]
+                if p[2] &lt; -r[2]: q[2] = -2*r[2] - q[2]
+                if p[0] &gt; r[0]: q[0] = 2*r[0] - q[0]
+                if p[1] &gt; r[1]: q[1] = 2*r[1] - q[1]
+                if p[2] &gt; r[2]: q[2] = 2*r[2] - q[2]
+
+        def glsl(self):
+                return &#39;\tboxFold(p,&#39; + vec3_str(self.r) + &#39;);\n&#39;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.fold.FoldBox.fold"><code class="name flex">
+<span>def <span class="ident">fold</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fold(self, p):
+        r = get_global(self.r)
+        p[:3] = np.clip(p[:3], -r, r)*2 - p[:3]</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldBox.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;\tboxFold(p,&#39; + vec3_str(self.r) + &#39;);\n&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldBox.unfold"><code class="name flex">
+<span>def <span class="ident">unfold</span></span>(<span>self, p, q)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unfold(self, p, q):
+        r = get_global(self.r)
+        if p[0] &lt; -r[0]: q[0] = -2*r[0] - q[0]
+        if p[1] &lt; -r[1]: q[1] = -2*r[1] - q[1]
+        if p[2] &lt; -r[2]: q[2] = -2*r[2] - q[2]
+        if p[0] &gt; r[0]: q[0] = 2*r[0] - q[0]
+        if p[1] &gt; r[1]: q[1] = 2*r[1] - q[1]
+        if p[2] &gt; r[2]: q[2] = 2*r[2] - q[2]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.fold.FoldInversion"><code class="flex name class">
+<span>class <span class="ident">FoldInversion</span></span>
+<span>(</span><span>epsilon=1e-12)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FoldInversion:
+        def __init__(self, epsilon=1e-12):
+                self.epsilon = set_global_float(epsilon)
+
+        def fold(self, p):
+                epsilon = get_global(self.epsilon)
+                p[:] *= 1.0 / (np.dot(p[:3], p[:3]) + epsilon)
+
+        def unfold(self, p, q):
+                epsilon = get_global(self.epsilon)
+                q[:] *= (np.dot(p[:3], p[:3]) + epsilon)
+
+        def glsl(self):
+                return &#39;\tp *= 1.0 / (dot(p.xyz, p.xyz) + &#39; + float_str(self.epsilon) + &#39;);\n&#39;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.fold.FoldInversion.fold"><code class="name flex">
+<span>def <span class="ident">fold</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fold(self, p):
+        epsilon = get_global(self.epsilon)
+        p[:] *= 1.0 / (np.dot(p[:3], p[:3]) + epsilon)</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldInversion.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;\tp *= 1.0 / (dot(p.xyz, p.xyz) + &#39; + float_str(self.epsilon) + &#39;);\n&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldInversion.unfold"><code class="name flex">
+<span>def <span class="ident">unfold</span></span>(<span>self, p, q)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unfold(self, p, q):
+        epsilon = get_global(self.epsilon)
+        q[:] *= (np.dot(p[:3], p[:3]) + epsilon)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.fold.FoldMenger"><code class="flex name class">
+<span>class <span class="ident">FoldMenger</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FoldMenger:
+        def __init__(self):
+                pass
+
+        def fold(self, p):
+                if p[0] &lt; p[1]:
+                        p[[0,1]] = p[[1,0]]
+                if p[0] &lt; p[2]:
+                        p[[0,2]] = p[[2,0]]
+                if p[1] &lt; p[2]:
+                        p[[2,1]] = p[[1,2]]
+
+        def unfold(self, p, q):
+                mx = max(p[0], p[1])
+                if min(p[0], p[1]) &lt; min(mx, p[2]):
+                        q[[2,1]] = q[[1,2]]
+                if mx &lt; p[2]:
+                        q[[0,2]] = q[[2,0]]
+                if p[0] &lt; p[1]:
+                        q[[0,1]] = q[[1,0]]
+
+        def glsl(self):
+                return &#39;\tmengerFold(p);\n&#39;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.fold.FoldMenger.fold"><code class="name flex">
+<span>def <span class="ident">fold</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fold(self, p):
+        if p[0] &lt; p[1]:
+                p[[0,1]] = p[[1,0]]
+        if p[0] &lt; p[2]:
+                p[[0,2]] = p[[2,0]]
+        if p[1] &lt; p[2]:
+                p[[2,1]] = p[[1,2]]</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldMenger.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;\tmengerFold(p);\n&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldMenger.unfold"><code class="name flex">
+<span>def <span class="ident">unfold</span></span>(<span>self, p, q)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unfold(self, p, q):
+        mx = max(p[0], p[1])
+        if min(p[0], p[1]) &lt; min(mx, p[2]):
+                q[[2,1]] = q[[1,2]]
+        if mx &lt; p[2]:
+                q[[0,2]] = q[[2,0]]
+        if p[0] &lt; p[1]:
+                q[[0,1]] = q[[1,0]]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.fold.FoldPlane"><code class="flex name class">
+<span>class <span class="ident">FoldPlane</span></span>
+<span>(</span><span>n, d=0.0)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FoldPlane:
+        def __init__(self, n, d=0.0):
+                self.n = set_global_vec3(n)
+                self.d = set_global_float(d)
+
+        def fold(self, p):
+                n = get_global(self.n)
+                d = get_global(self.d)
+                p[:3] -= 2.0 * min(0.0, np.dot(p[:3], n) - d) * n
+
+        def unfold(self, p, q):
+                n = get_global(self.n)
+                d = get_global(self.d)
+                if np.dot(p[:3], n) - d &lt; 0.0:
+                        q[:3] -= 2.0 * (np.dot(q[:3], n) - d) * n
+
+        def glsl(self):
+                if vec3_eq(self.n, (1,0,0)):
+                        return &#39;\tp.x = abs(p.x - &#39; + float_str(self.d) + &#39;) + &#39; + float_str(self.d) + &#39;;\n&#39;
+                elif vec3_eq(self.n, (0,1,0)):
+                        return &#39;\tp.y = abs(p.y - &#39; + float_str(self.d) + &#39;) + &#39; + float_str(self.d) + &#39;;\n&#39;
+                elif vec3_eq(self.n, (0,0,1)):
+                        return &#39;\tp.z = abs(p.z - &#39; + float_str(self.d) + &#39;) + &#39; + float_str(self.d) + &#39;;\n&#39;
+                elif vec3_eq(self.n, (-1,0,0)):
+                        return &#39;\tp.x = -abs(p.x + &#39; + float_str(self.d) + &#39;) - &#39; + float_str(self.d) + &#39;;\n&#39;
+                elif vec3_eq(self.n, (0,-1,0)):
+                        return &#39;\tp.y = -abs(p.y + &#39; + float_str(self.d) + &#39;) - &#39; + float_str(self.d) + &#39;;\n&#39;
+                elif vec3_eq(self.n, (0,0,-1)):
+                        return &#39;\tp.z = -abs(p.z + &#39; + float_str(self.d) + &#39;) - &#39; + float_str(self.d) + &#39;;\n&#39;
+                else:
+                        return &#39;\tplaneFold(p, &#39; + vec3_str(self.n) + &#39;, &#39; + float_str(self.d) + &#39;);\n&#39;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.fold.FoldPlane.fold"><code class="name flex">
+<span>def <span class="ident">fold</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fold(self, p):
+        n = get_global(self.n)
+        d = get_global(self.d)
+        p[:3] -= 2.0 * min(0.0, np.dot(p[:3], n) - d) * n</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldPlane.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        if vec3_eq(self.n, (1,0,0)):
+                return &#39;\tp.x = abs(p.x - &#39; + float_str(self.d) + &#39;) + &#39; + float_str(self.d) + &#39;;\n&#39;
+        elif vec3_eq(self.n, (0,1,0)):
+                return &#39;\tp.y = abs(p.y - &#39; + float_str(self.d) + &#39;) + &#39; + float_str(self.d) + &#39;;\n&#39;
+        elif vec3_eq(self.n, (0,0,1)):
+                return &#39;\tp.z = abs(p.z - &#39; + float_str(self.d) + &#39;) + &#39; + float_str(self.d) + &#39;;\n&#39;
+        elif vec3_eq(self.n, (-1,0,0)):
+                return &#39;\tp.x = -abs(p.x + &#39; + float_str(self.d) + &#39;) - &#39; + float_str(self.d) + &#39;;\n&#39;
+        elif vec3_eq(self.n, (0,-1,0)):
+                return &#39;\tp.y = -abs(p.y + &#39; + float_str(self.d) + &#39;) - &#39; + float_str(self.d) + &#39;;\n&#39;
+        elif vec3_eq(self.n, (0,0,-1)):
+                return &#39;\tp.z = -abs(p.z + &#39; + float_str(self.d) + &#39;) - &#39; + float_str(self.d) + &#39;;\n&#39;
+        else:
+                return &#39;\tplaneFold(p, &#39; + vec3_str(self.n) + &#39;, &#39; + float_str(self.d) + &#39;);\n&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldPlane.unfold"><code class="name flex">
+<span>def <span class="ident">unfold</span></span>(<span>self, p, q)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unfold(self, p, q):
+        n = get_global(self.n)
+        d = get_global(self.d)
+        if np.dot(p[:3], n) - d &lt; 0.0:
+                q[:3] -= 2.0 * (np.dot(q[:3], n) - d) * n</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.fold.FoldRepeatX"><code class="flex name class">
+<span>class <span class="ident">FoldRepeatX</span></span>
+<span>(</span><span>m)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FoldRepeatX:
+        def __init__(self, m):
+                self.m = set_global_float(m)
+
+        def fold(self, p):
+                m = get_global(self.m)
+                p[0] = abs((p[0] - m/2) % m - m/2)
+
+        def unfold(self, p, q):
+                m = get_global(self.m)
+                a = (p[0] - m/2) % m - m/2
+                if a &lt; 0.0: q[0] = -q[0]
+                q[0] += p[0] - a
+
+        def glsl(self):
+                return &#39;\tp.x = abs(mod(p.x - &#39; + float_str(self.m) + &#39;/2,&#39; + float_str(self.m) + &#39;) - &#39; + float_str(self.m) + &#39;/2);\n&#39;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.fold.FoldRepeatX.fold"><code class="name flex">
+<span>def <span class="ident">fold</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fold(self, p):
+        m = get_global(self.m)
+        p[0] = abs((p[0] - m/2) % m - m/2)</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldRepeatX.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;\tp.x = abs(mod(p.x - &#39; + float_str(self.m) + &#39;/2,&#39; + float_str(self.m) + &#39;) - &#39; + float_str(self.m) + &#39;/2);\n&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldRepeatX.unfold"><code class="name flex">
+<span>def <span class="ident">unfold</span></span>(<span>self, p, q)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unfold(self, p, q):
+        m = get_global(self.m)
+        a = (p[0] - m/2) % m - m/2
+        if a &lt; 0.0: q[0] = -q[0]
+        q[0] += p[0] - a</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.fold.FoldRepeatXYZ"><code class="flex name class">
+<span>class <span class="ident">FoldRepeatXYZ</span></span>
+<span>(</span><span>m)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FoldRepeatXYZ:
+        def __init__(self, m):
+                self.m = set_global_float(m)
+
+        def fold(self, p):
+                m = get_global(self.m)
+                p[:3] = abs((p[:3] - m/2) % m - m/2)
+
+        def unfold(self, p, q):
+                m = get_global(self.m)
+                a = (p[:3] - m/2) % m - m/2
+                if a[0] &lt; 0.0: q[0] = -q[0]
+                if a[1] &lt; 0.0: q[1] = -q[1]
+                if a[2] &lt; 0.0: q[2] = -q[2]
+                q[:3] += p[:3] - a
+
+        def glsl(self):
+                return &#39;\tp.xyz = abs(mod(p.xyz - &#39; + float_str(self.m) + &#39;/2,&#39; + float_str(self.m) + &#39;) - &#39; + float_str(self.m) + &#39;/2);\n&#39;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.fold.FoldRepeatXYZ.fold"><code class="name flex">
+<span>def <span class="ident">fold</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fold(self, p):
+        m = get_global(self.m)
+        p[:3] = abs((p[:3] - m/2) % m - m/2)</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldRepeatXYZ.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;\tp.xyz = abs(mod(p.xyz - &#39; + float_str(self.m) + &#39;/2,&#39; + float_str(self.m) + &#39;) - &#39; + float_str(self.m) + &#39;/2);\n&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldRepeatXYZ.unfold"><code class="name flex">
+<span>def <span class="ident">unfold</span></span>(<span>self, p, q)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unfold(self, p, q):
+        m = get_global(self.m)
+        a = (p[:3] - m/2) % m - m/2
+        if a[0] &lt; 0.0: q[0] = -q[0]
+        if a[1] &lt; 0.0: q[1] = -q[1]
+        if a[2] &lt; 0.0: q[2] = -q[2]
+        q[:3] += p[:3] - a</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.fold.FoldRepeatY"><code class="flex name class">
+<span>class <span class="ident">FoldRepeatY</span></span>
+<span>(</span><span>m)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FoldRepeatY:
+        def __init__(self, m):
+                self.m = set_global_float(m)
+
+        def fold(self, p):
+                m = get_global(self.m)
+                p[1] = abs((p[1] - m/2) % m - m/2)
+
+        def unfold(self, p, q):
+                m = get_global(self.m)
+                a = (p[1] - m/2) % m - m/2
+                if a &lt; 0.0: q[1] = -q[1]
+                q[1] += p[1] - a
+
+        def glsl(self):
+                return &#39;\tp.y = abs(mod(p.y - &#39; + float_str(self.m) + &#39;/2,&#39; + float_str(self.m) + &#39;) - &#39; + float_str(self.m) + &#39;/2);\n&#39;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.fold.FoldRepeatY.fold"><code class="name flex">
+<span>def <span class="ident">fold</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fold(self, p):
+        m = get_global(self.m)
+        p[1] = abs((p[1] - m/2) % m - m/2)</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldRepeatY.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;\tp.y = abs(mod(p.y - &#39; + float_str(self.m) + &#39;/2,&#39; + float_str(self.m) + &#39;) - &#39; + float_str(self.m) + &#39;/2);\n&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldRepeatY.unfold"><code class="name flex">
+<span>def <span class="ident">unfold</span></span>(<span>self, p, q)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unfold(self, p, q):
+        m = get_global(self.m)
+        a = (p[1] - m/2) % m - m/2
+        if a &lt; 0.0: q[1] = -q[1]
+        q[1] += p[1] - a</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.fold.FoldRepeatZ"><code class="flex name class">
+<span>class <span class="ident">FoldRepeatZ</span></span>
+<span>(</span><span>m)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FoldRepeatZ:
+        def __init__(self, m):
+                self.m = set_global_float(m)
+
+        def fold(self, p):
+                m = get_global(self.m)
+                p[2] = abs((p[2] - m/2) % m - m/2)
+
+        def unfold(self, p, q):
+                m = get_global(self.m)
+                a = (p[2] - m/2) % m - m/2
+                if a &lt; 0.0: q[2] = -q[2]
+                q[2] += p[2] - a
+
+        def glsl(self):
+                return &#39;\tp.z = abs(mod(p.z - &#39; + float_str(self.m) + &#39;/2,&#39; + float_str(self.m) + &#39;) - &#39; + float_str(self.m) + &#39;/2);\n&#39;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.fold.FoldRepeatZ.fold"><code class="name flex">
+<span>def <span class="ident">fold</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fold(self, p):
+        m = get_global(self.m)
+        p[2] = abs((p[2] - m/2) % m - m/2)</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldRepeatZ.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;\tp.z = abs(mod(p.z - &#39; + float_str(self.m) + &#39;/2,&#39; + float_str(self.m) + &#39;) - &#39; + float_str(self.m) + &#39;/2);\n&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldRepeatZ.unfold"><code class="name flex">
+<span>def <span class="ident">unfold</span></span>(<span>self, p, q)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unfold(self, p, q):
+        m = get_global(self.m)
+        a = (p[2] - m/2) % m - m/2
+        if a &lt; 0.0: q[2] = -q[2]
+        q[2] += p[2] - a</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.fold.FoldRotateX"><code class="flex name class">
+<span>class <span class="ident">FoldRotateX</span></span>
+<span>(</span><span>a)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FoldRotateX:
+        def __init__(self, a):
+                self.a = set_global_float(a)
+
+        def fold(self, p):
+                a = get_global(self.a)
+                s,c = math.sin(a), math.cos(a)
+                p[1], p[2] = (c*p[1] + s*p[2]), (c*p[2] - s*p[1])
+
+        def unfold(self, p, q):
+                a = get_global(self.a)
+                s,c = math.sin(-a), math.cos(-a)
+                q[1], q[2] = (c*q[1] + s*q[2]), (c*q[2] - s*q[1])
+
+        def glsl(self):
+                if isinstance(self.a, (float, int)):
+                        return &#39;\trotX(p, &#39; + float_str(math.sin(self.a)) + &#39;, &#39; + float_str(math.cos(self.a)) + &#39;);\n&#39;
+                else:
+                        return &#39;\trotX(p, &#39; + float_str(self.a) + &#39;);\n&#39;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.fold.FoldRotateX.fold"><code class="name flex">
+<span>def <span class="ident">fold</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fold(self, p):
+        a = get_global(self.a)
+        s,c = math.sin(a), math.cos(a)
+        p[1], p[2] = (c*p[1] + s*p[2]), (c*p[2] - s*p[1])</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldRotateX.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        if isinstance(self.a, (float, int)):
+                return &#39;\trotX(p, &#39; + float_str(math.sin(self.a)) + &#39;, &#39; + float_str(math.cos(self.a)) + &#39;);\n&#39;
+        else:
+                return &#39;\trotX(p, &#39; + float_str(self.a) + &#39;);\n&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldRotateX.unfold"><code class="name flex">
+<span>def <span class="ident">unfold</span></span>(<span>self, p, q)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unfold(self, p, q):
+        a = get_global(self.a)
+        s,c = math.sin(-a), math.cos(-a)
+        q[1], q[2] = (c*q[1] + s*q[2]), (c*q[2] - s*q[1])</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.fold.FoldRotateY"><code class="flex name class">
+<span>class <span class="ident">FoldRotateY</span></span>
+<span>(</span><span>a)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FoldRotateY:
+        def __init__(self, a):
+                self.a = set_global_float(a)
+
+        def fold(self, p):
+                a = get_global(self.a)
+                s,c = math.sin(a), math.cos(a)
+                p[2], p[0] = (c*p[2] + s*p[0]), (c*p[0] - s*p[2])
+
+        def unfold(self, p, q):
+                a = get_global(self.a)
+                s,c = math.sin(-a), math.cos(-a)
+                q[2], q[0] = (c*q[2] + s*q[0]), (c*q[0] - s*q[2])
+
+        def glsl(self):
+                if isinstance(self.a, (float, int)):
+                        return &#39;\trotY(p, &#39; + float_str(math.sin(self.a)) + &#39;, &#39; + float_str(math.cos(self.a)) + &#39;);\n&#39;
+                else:
+                        return &#39;\trotY(p, &#39; + float_str(self.a) + &#39;);\n&#39;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.fold.FoldRotateY.fold"><code class="name flex">
+<span>def <span class="ident">fold</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fold(self, p):
+        a = get_global(self.a)
+        s,c = math.sin(a), math.cos(a)
+        p[2], p[0] = (c*p[2] + s*p[0]), (c*p[0] - s*p[2])</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldRotateY.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        if isinstance(self.a, (float, int)):
+                return &#39;\trotY(p, &#39; + float_str(math.sin(self.a)) + &#39;, &#39; + float_str(math.cos(self.a)) + &#39;);\n&#39;
+        else:
+                return &#39;\trotY(p, &#39; + float_str(self.a) + &#39;);\n&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldRotateY.unfold"><code class="name flex">
+<span>def <span class="ident">unfold</span></span>(<span>self, p, q)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unfold(self, p, q):
+        a = get_global(self.a)
+        s,c = math.sin(-a), math.cos(-a)
+        q[2], q[0] = (c*q[2] + s*q[0]), (c*q[0] - s*q[2])</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.fold.FoldRotateZ"><code class="flex name class">
+<span>class <span class="ident">FoldRotateZ</span></span>
+<span>(</span><span>a)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FoldRotateZ:
+        def __init__(self, a):
+                self.a = set_global_float(a)
+
+        def fold(self, p):
+                a = get_global(self.a)
+                s,c = math.sin(a), math.cos(a)
+                p[0], p[1] = (c*p[0] + s*p[1]), (c*p[1] - s*p[0])
+
+        def unfold(self, p, q):
+                a = get_global(self.a)
+                s,c = math.sin(-a), math.cos(-a)
+                q[0], q[1] = (c*q[0] + s*q[1]), (c*q[1] - s*q[0])
+
+        def glsl(self):
+                if isinstance(self.a, (float, int)):
+                        return &#39;\trotZ(p, &#39; + float_str(math.sin(self.a)) + &#39;, &#39; + float_str(math.cos(self.a)) + &#39;);\n&#39;
+                else:
+                        return &#39;\trotZ(p, &#39; + float_str(self.a) + &#39;);\n&#39;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.fold.FoldRotateZ.fold"><code class="name flex">
+<span>def <span class="ident">fold</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fold(self, p):
+        a = get_global(self.a)
+        s,c = math.sin(a), math.cos(a)
+        p[0], p[1] = (c*p[0] + s*p[1]), (c*p[1] - s*p[0])</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldRotateZ.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        if isinstance(self.a, (float, int)):
+                return &#39;\trotZ(p, &#39; + float_str(math.sin(self.a)) + &#39;, &#39; + float_str(math.cos(self.a)) + &#39;);\n&#39;
+        else:
+                return &#39;\trotZ(p, &#39; + float_str(self.a) + &#39;);\n&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldRotateZ.unfold"><code class="name flex">
+<span>def <span class="ident">unfold</span></span>(<span>self, p, q)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unfold(self, p, q):
+        a = get_global(self.a)
+        s,c = math.sin(-a), math.cos(-a)
+        q[0], q[1] = (c*q[0] + s*q[1]), (c*q[1] - s*q[0])</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.fold.FoldScaleOrigin"><code class="flex name class">
+<span>class <span class="ident">FoldScaleOrigin</span></span>
+<span>(</span><span>s=1.0)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FoldScaleOrigin:
+        def __init__(self, s=1.0):
+                self.s = set_global_float(s)
+                self.o = set_global_vec3((0,0,0))
+
+        def fold(self, p):
+                p[:] = p*get_global(self.s) + self.o
+
+        def unfold(self, p, q):
+                q[:] = (q - self.o[:3]) / get_global(self.s)
+
+        def glsl(self):
+                ret_str = &#39;&#39;
+                if self.s != 1.0:
+                        ret_str += &#39;\tp = p*&#39; + float_str(self.s) + &#39;;p.w = abs(p.w);p += o;\n&#39;
+                else:
+                        ret_str += &#39;\tp += o;\n&#39;
+                return ret_str</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.fold.FoldScaleOrigin.fold"><code class="name flex">
+<span>def <span class="ident">fold</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fold(self, p):
+        p[:] = p*get_global(self.s) + self.o</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldScaleOrigin.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        ret_str = &#39;&#39;
+        if self.s != 1.0:
+                ret_str += &#39;\tp = p*&#39; + float_str(self.s) + &#39;;p.w = abs(p.w);p += o;\n&#39;
+        else:
+                ret_str += &#39;\tp += o;\n&#39;
+        return ret_str</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldScaleOrigin.unfold"><code class="name flex">
+<span>def <span class="ident">unfold</span></span>(<span>self, p, q)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unfold(self, p, q):
+        q[:] = (q - self.o[:3]) / get_global(self.s)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.fold.FoldScaleTranslate"><code class="flex name class">
+<span>class <span class="ident">FoldScaleTranslate</span></span>
+<span>(</span><span>s=1.0, t=(0, 0, 0))</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FoldScaleTranslate:
+        def __init__(self, s=1.0, t=(0,0,0)):
+                self.s = set_global_float(s)
+                self.t = set_global_vec3(t)
+
+        def fold(self, p):
+                p[:] *= get_global(self.s)
+                p[:3] += get_global(self.t)
+
+        def unfold(self, p, q):
+                q[:3] -= get_global(self.t)
+                q[:] /= get_global(self.s)
+
+        def glsl(self):
+                ret_str = &#39;&#39;
+                if self.s != 1.0:
+                        if isinstance(self.s, (float, int)) and self.s &gt;= 0:
+                                ret_str += &#39;\tp *= &#39; + float_str(self.s) + &#39;;\n&#39;
+                        else:
+                                ret_str += &#39;\tp.xyz *= &#39; + float_str(self.s) + &#39;;\n&#39;
+                                ret_str += &#39;\tp.w *= abs(&#39; + float_str(self.s) + &#39;);\n&#39;
+                if not np.array_equal(self.t, np.zeros((3,), dtype=np.float32)):
+                        ret_str += &#39;\tp.xyz += &#39; + vec3_str(self.t) + &#39;;\n&#39;
+                return ret_str</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.fold.FoldScaleTranslate.fold"><code class="name flex">
+<span>def <span class="ident">fold</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fold(self, p):
+        p[:] *= get_global(self.s)
+        p[:3] += get_global(self.t)</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldScaleTranslate.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        ret_str = &#39;&#39;
+        if self.s != 1.0:
+                if isinstance(self.s, (float, int)) and self.s &gt;= 0:
+                        ret_str += &#39;\tp *= &#39; + float_str(self.s) + &#39;;\n&#39;
+                else:
+                        ret_str += &#39;\tp.xyz *= &#39; + float_str(self.s) + &#39;;\n&#39;
+                        ret_str += &#39;\tp.w *= abs(&#39; + float_str(self.s) + &#39;);\n&#39;
+        if not np.array_equal(self.t, np.zeros((3,), dtype=np.float32)):
+                ret_str += &#39;\tp.xyz += &#39; + vec3_str(self.t) + &#39;;\n&#39;
+        return ret_str</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldScaleTranslate.unfold"><code class="name flex">
+<span>def <span class="ident">unfold</span></span>(<span>self, p, q)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unfold(self, p, q):
+        q[:3] -= get_global(self.t)
+        q[:] /= get_global(self.s)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.fold.FoldSierpinski"><code class="flex name class">
+<span>class <span class="ident">FoldSierpinski</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FoldSierpinski:
+        def __init__(self):
+                pass
+
+        def fold(self, p):
+                if p[0] + p[1] &lt; 0.0:
+                        p[[0,1]] = -p[[1,0]]
+                if p[0] + p[2] &lt; 0.0:
+                        p[[0,2]] = -p[[2,0]]
+                if p[1] + p[2] &lt; 0.0:
+                        p[[2,1]] = -p[[1,2]]
+
+        def unfold(self, p, q):
+                mx = max(-p[1], p[0])
+                if max(p[1], -p[0]) + max(-mx, p[2]) &lt; 0.0:
+                        q[[2,1]] = -q[[1,2]]
+                if mx + p[2] &lt; 0.0:
+                        q[[0,2]] = -q[[2,0]]
+                if p[0] + p[1] &lt; 0.0:
+                        q[[0,1]] = -q[[1,0]]
+
+        def glsl(self):
+                return &#39;\tsierpinskiFold(p);\n&#39;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.fold.FoldSierpinski.fold"><code class="name flex">
+<span>def <span class="ident">fold</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fold(self, p):
+        if p[0] + p[1] &lt; 0.0:
+                p[[0,1]] = -p[[1,0]]
+        if p[0] + p[2] &lt; 0.0:
+                p[[0,2]] = -p[[2,0]]
+        if p[1] + p[2] &lt; 0.0:
+                p[[2,1]] = -p[[1,2]]</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldSierpinski.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;\tsierpinskiFold(p);\n&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldSierpinski.unfold"><code class="name flex">
+<span>def <span class="ident">unfold</span></span>(<span>self, p, q)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unfold(self, p, q):
+        mx = max(-p[1], p[0])
+        if max(p[1], -p[0]) + max(-mx, p[2]) &lt; 0.0:
+                q[[2,1]] = -q[[1,2]]
+        if mx + p[2] &lt; 0.0:
+                q[[0,2]] = -q[[2,0]]
+        if p[0] + p[1] &lt; 0.0:
+                q[[0,1]] = -q[[1,0]]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.fold.FoldSphere"><code class="flex name class">
+<span>class <span class="ident">FoldSphere</span></span>
+<span>(</span><span>min_r=0.5, max_r=1.0)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FoldSphere:
+        def __init__(self, min_r=0.5, max_r=1.0):
+                self.min_r = set_global_float(min_r)
+                self.max_r = set_global_float(max_r)
+
+        def fold(self, p):
+                max_r = get_global(self.max_r)
+                min_r = get_global(self.min_r)
+                r2 = np.dot(p[:3], p[:3])
+                p[:] *= max(max_r / max(min_r, r2), 1.0)
+
+        def unfold(self, p, q):
+                max_r = get_global(self.max_r)
+                min_r = get_global(self.min_r)
+                r2 = np.dot(p[:3], p[:3])
+                q[:] /= max(max_r / max(min_r, r2), 1.0)
+
+        def glsl(self):
+                return &#39;\tsphereFold(p,&#39; + float_str(self.min_r) + &#39;,&#39; + float_str(self.max_r) + &#39;);\n&#39;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.fold.FoldSphere.fold"><code class="name flex">
+<span>def <span class="ident">fold</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fold(self, p):
+        max_r = get_global(self.max_r)
+        min_r = get_global(self.min_r)
+        r2 = np.dot(p[:3], p[:3])
+        p[:] *= max(max_r / max(min_r, r2), 1.0)</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldSphere.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;\tsphereFold(p,&#39; + float_str(self.min_r) + &#39;,&#39; + float_str(self.max_r) + &#39;);\n&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.fold.FoldSphere.unfold"><code class="name flex">
+<span>def <span class="ident">unfold</span></span>(<span>self, p, q)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unfold(self, p, q):
+        max_r = get_global(self.max_r)
+        min_r = get_global(self.min_r)
+        r2 = np.dot(p[:3], p[:3])
+        q[:] /= max(max_r / max(min_r, r2), 1.0)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pyspace" href="index.html">pyspace</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pyspace.fold.FoldAbs" href="#pyspace.fold.FoldAbs">FoldAbs</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.fold.FoldAbs.fold" href="#pyspace.fold.FoldAbs.fold">fold</a></code></li>
+<li><code><a title="pyspace.fold.FoldAbs.glsl" href="#pyspace.fold.FoldAbs.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.fold.FoldAbs.unfold" href="#pyspace.fold.FoldAbs.unfold">unfold</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.fold.FoldBox" href="#pyspace.fold.FoldBox">FoldBox</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.fold.FoldBox.fold" href="#pyspace.fold.FoldBox.fold">fold</a></code></li>
+<li><code><a title="pyspace.fold.FoldBox.glsl" href="#pyspace.fold.FoldBox.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.fold.FoldBox.unfold" href="#pyspace.fold.FoldBox.unfold">unfold</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.fold.FoldInversion" href="#pyspace.fold.FoldInversion">FoldInversion</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.fold.FoldInversion.fold" href="#pyspace.fold.FoldInversion.fold">fold</a></code></li>
+<li><code><a title="pyspace.fold.FoldInversion.glsl" href="#pyspace.fold.FoldInversion.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.fold.FoldInversion.unfold" href="#pyspace.fold.FoldInversion.unfold">unfold</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.fold.FoldMenger" href="#pyspace.fold.FoldMenger">FoldMenger</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.fold.FoldMenger.fold" href="#pyspace.fold.FoldMenger.fold">fold</a></code></li>
+<li><code><a title="pyspace.fold.FoldMenger.glsl" href="#pyspace.fold.FoldMenger.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.fold.FoldMenger.unfold" href="#pyspace.fold.FoldMenger.unfold">unfold</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.fold.FoldPlane" href="#pyspace.fold.FoldPlane">FoldPlane</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.fold.FoldPlane.fold" href="#pyspace.fold.FoldPlane.fold">fold</a></code></li>
+<li><code><a title="pyspace.fold.FoldPlane.glsl" href="#pyspace.fold.FoldPlane.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.fold.FoldPlane.unfold" href="#pyspace.fold.FoldPlane.unfold">unfold</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.fold.FoldRepeatX" href="#pyspace.fold.FoldRepeatX">FoldRepeatX</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.fold.FoldRepeatX.fold" href="#pyspace.fold.FoldRepeatX.fold">fold</a></code></li>
+<li><code><a title="pyspace.fold.FoldRepeatX.glsl" href="#pyspace.fold.FoldRepeatX.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.fold.FoldRepeatX.unfold" href="#pyspace.fold.FoldRepeatX.unfold">unfold</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.fold.FoldRepeatXYZ" href="#pyspace.fold.FoldRepeatXYZ">FoldRepeatXYZ</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.fold.FoldRepeatXYZ.fold" href="#pyspace.fold.FoldRepeatXYZ.fold">fold</a></code></li>
+<li><code><a title="pyspace.fold.FoldRepeatXYZ.glsl" href="#pyspace.fold.FoldRepeatXYZ.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.fold.FoldRepeatXYZ.unfold" href="#pyspace.fold.FoldRepeatXYZ.unfold">unfold</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.fold.FoldRepeatY" href="#pyspace.fold.FoldRepeatY">FoldRepeatY</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.fold.FoldRepeatY.fold" href="#pyspace.fold.FoldRepeatY.fold">fold</a></code></li>
+<li><code><a title="pyspace.fold.FoldRepeatY.glsl" href="#pyspace.fold.FoldRepeatY.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.fold.FoldRepeatY.unfold" href="#pyspace.fold.FoldRepeatY.unfold">unfold</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.fold.FoldRepeatZ" href="#pyspace.fold.FoldRepeatZ">FoldRepeatZ</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.fold.FoldRepeatZ.fold" href="#pyspace.fold.FoldRepeatZ.fold">fold</a></code></li>
+<li><code><a title="pyspace.fold.FoldRepeatZ.glsl" href="#pyspace.fold.FoldRepeatZ.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.fold.FoldRepeatZ.unfold" href="#pyspace.fold.FoldRepeatZ.unfold">unfold</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.fold.FoldRotateX" href="#pyspace.fold.FoldRotateX">FoldRotateX</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.fold.FoldRotateX.fold" href="#pyspace.fold.FoldRotateX.fold">fold</a></code></li>
+<li><code><a title="pyspace.fold.FoldRotateX.glsl" href="#pyspace.fold.FoldRotateX.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.fold.FoldRotateX.unfold" href="#pyspace.fold.FoldRotateX.unfold">unfold</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.fold.FoldRotateY" href="#pyspace.fold.FoldRotateY">FoldRotateY</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.fold.FoldRotateY.fold" href="#pyspace.fold.FoldRotateY.fold">fold</a></code></li>
+<li><code><a title="pyspace.fold.FoldRotateY.glsl" href="#pyspace.fold.FoldRotateY.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.fold.FoldRotateY.unfold" href="#pyspace.fold.FoldRotateY.unfold">unfold</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.fold.FoldRotateZ" href="#pyspace.fold.FoldRotateZ">FoldRotateZ</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.fold.FoldRotateZ.fold" href="#pyspace.fold.FoldRotateZ.fold">fold</a></code></li>
+<li><code><a title="pyspace.fold.FoldRotateZ.glsl" href="#pyspace.fold.FoldRotateZ.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.fold.FoldRotateZ.unfold" href="#pyspace.fold.FoldRotateZ.unfold">unfold</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.fold.FoldScaleOrigin" href="#pyspace.fold.FoldScaleOrigin">FoldScaleOrigin</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.fold.FoldScaleOrigin.fold" href="#pyspace.fold.FoldScaleOrigin.fold">fold</a></code></li>
+<li><code><a title="pyspace.fold.FoldScaleOrigin.glsl" href="#pyspace.fold.FoldScaleOrigin.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.fold.FoldScaleOrigin.unfold" href="#pyspace.fold.FoldScaleOrigin.unfold">unfold</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.fold.FoldScaleTranslate" href="#pyspace.fold.FoldScaleTranslate">FoldScaleTranslate</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.fold.FoldScaleTranslate.fold" href="#pyspace.fold.FoldScaleTranslate.fold">fold</a></code></li>
+<li><code><a title="pyspace.fold.FoldScaleTranslate.glsl" href="#pyspace.fold.FoldScaleTranslate.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.fold.FoldScaleTranslate.unfold" href="#pyspace.fold.FoldScaleTranslate.unfold">unfold</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.fold.FoldSierpinski" href="#pyspace.fold.FoldSierpinski">FoldSierpinski</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.fold.FoldSierpinski.fold" href="#pyspace.fold.FoldSierpinski.fold">fold</a></code></li>
+<li><code><a title="pyspace.fold.FoldSierpinski.glsl" href="#pyspace.fold.FoldSierpinski.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.fold.FoldSierpinski.unfold" href="#pyspace.fold.FoldSierpinski.unfold">unfold</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.fold.FoldSphere" href="#pyspace.fold.FoldSphere">FoldSphere</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.fold.FoldSphere.fold" href="#pyspace.fold.FoldSphere.fold">fold</a></code></li>
+<li><code><a title="pyspace.fold.FoldSphere.glsl" href="#pyspace.fold.FoldSphere.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.fold.FoldSphere.unfold" href="#pyspace.fold.FoldSphere.unfold">unfold</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

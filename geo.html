@@ -1,0 +1,1558 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.1" />
+<title>pyspace.geo API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pyspace.geo</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import math
+import numpy as np
+from .util import *
+
+class Sphere:
+        def __init__(self, r=1.0, c=(0,0,0), color=(1,1,1)):
+                self.r = set_global_float(r)
+                self.c = set_global_vec3(c)
+                self.color = color
+
+        def DE(self, p):
+                c = get_global(self.c)
+                r = get_global(self.r)
+                return (np.linalg.norm(p[:3] - c) - r) / p[3]
+
+        def NP(self, p):
+                c = get_global(self.c)
+                r = get_global(self.r)
+                return normalize(p[:3] - c) * r + c
+
+        def glsl(self):
+                return &#39;de_sphere(p&#39; + cond_offset(self.c) + &#39;, &#39; + float_str(self.r) + &#39;)&#39;
+
+        def glsl_col(self):
+                return make_color(self)
+
+class Box:
+        def __init__(self, s=(1,1,1), c=(0,0,0), color=(1,1,1)):
+                self.s = set_global_vec3(s)
+                self.c = set_global_vec3(c)
+                self.color = color
+
+        def DE(self, p):
+                c = get_global(self.c)
+                s = get_global(self.s)
+                a = np.abs(p[:3] - c) - s;
+                return (min(max(a[0], a[1], a[2]), 0.0) + np.linalg.norm(np.maximum(a,0.0))) / p[3]
+
+        def NP(self, p):
+                c = get_global(self.c)
+                s = get_global(self.s)
+                return np.clip(p[:3] - c, -s, s) + c
+
+        def glsl(self):
+                return &#39;de_box(p&#39; + cond_offset(self.c) + &#39;, &#39; + vec3_str(self.s) + &#39;)&#39;
+
+        def glsl_col(self):
+                return make_color(self)
+
+class Tetrahedron:
+        def __init__(self, r=1.0, c=(0,0,0), color=(1,1,1)):
+                self.r = set_global_float(r)
+                self.c = set_global_vec3(c)
+                self.color = color
+
+        def DE(self, p):
+                c = get_global(self.c)
+                r = get_global(self.r)
+                a = p[:3] - c
+                md = max(-a[0] - a[1] - a[2], a[0] + a[1] - a[2], -a[0] + a[1] + a[2], a[0] - a[1] + a[2])
+                return (md - r) / (p[3] * math.sqrt(3.0));
+
+        def NP(self, p):
+                raise Exception(&#34;Not implemented&#34;)
+
+        def glsl(self):
+                return &#39;de_tetrahedron(p&#39; + cond_offset(self.c) + &#39;, &#39; + float_str(self.r) + &#39;)&#39;
+
+        def glsl_col(self):
+                return make_color(self)
+
+class InfCross:
+        def __init__(self, r=1.0, c=(0,0,0), color=(1,1,1)):
+                self.r = set_global_float(r)
+                self.c = set_global_vec3(c)
+                self.color = color
+
+        def DE(self, p):
+                r = get_global(self.r)
+                c = get_global(self.c)
+                sq = (p[:3] - c) * (p[:3] - c)
+                return (math.sqrt(min(min(sq[0] + sq[1], sq[0] + sq[2]), sq[1] + sq[2])) - r) / p[3]
+
+        def NP(self, p):
+                r = get_global(self.r)
+                c = get_global(self.c)
+                n = p[:3] - c
+                m_ix = np.argmax(np.abs(n))
+                n[m_ix] = 0.0
+                n = normalize(n) * r
+                n[m_ix] = p[m_ix] - c[m_ix]
+                return n + c
+
+        def glsl(self):
+                return &#39;de_inf_cross(p&#39; + cond_offset(self.c) + &#39;, &#39; + float_str(self.r) + &#39;)&#39;
+
+        def glsl_col(self):
+                return make_color(self)
+
+class InfCrossXY:
+        def __init__(self, r=1.0, c=(0,0,0), color=(1,1,1)):
+                self.r = set_global_float(r)
+                self.c = set_global_vec3(c)
+                self.color = color
+
+        def DE(self, p):
+                r = get_global(self.r)
+                c = get_global(self.c)
+                sq = (p[:3] - c) * (p[:3] - c)
+                return (math.sqrt(min(sq[0], sq[1]) + sq[2]) - r) / p[3]
+
+        def NP(self, p):
+                r = get_global(self.r)
+                c = get_global(self.c)
+                n = p[:3] - c
+                m_ix = (0 if abs(n[0]) &gt; abs(n[1]) else 1)
+                n[m_ix] = 0.0
+                n = normalize(n) * r
+                n[m_ix] = p[m_ix] - c[m_ix]
+                return n + c
+
+        def glsl(self):
+                return &#39;de_inf_cross_xy(p&#39; + cond_offset(self.c) + &#39;, &#39; + float_str(self.r) + &#39;)&#39;
+
+        def glsl_col(self):
+                return make_color(self)
+
+class InfLine:
+        def __init__(self, r=1.0, n=(1,0,0), c=(0,0,0), color=(1,1,1)):
+                self.r = set_global_float(r)
+                self.n = set_global_vec3(n)
+                self.c = set_global_vec3(c)
+                self.color = color
+
+        def DE(self, p):
+                r = get_global(self.r)
+                n = get_global(self.n)
+                c = get_global(self.c)
+                q = p[:3] - c
+                return (np.linalg.norm(q - n*np.dot(n,q)) - r) / p[3]
+
+        def NP(self, p):
+                r = get_global(self.r)
+                c = get_global(self.c)
+                n = p[:3] - c
+                m_ix = (0 if abs(n[0]) &gt; abs(n[1]) else 1)
+                n[m_ix] = 0.0
+                n = normalize(n) * r
+                n[m_ix] = p[m_ix] - c[m_ix]
+                return n + c
+
+        def glsl(self):
+                return &#39;de_inf_line(p&#39; + cond_offset(self.c) + &#39;, &#39; + vec3_str(self.n) + &#39;, &#39; + float_str(self.r) + &#39;)&#39;
+
+        def glsl_col(self):
+                return make_color(self)
+
+class XPlane:
+        def __init__(self, x=0.0, color=(1,1,1)):
+                self.x = set_global_float(x)
+                self.color = color
+
+        def DE(self, p):
+                x = get_global(self.x)
+                return abs(p[0] - x) / p[3]
+
+        def NP(self, p):
+                x = get_global(self.x)
+                return np.array([x, p[1], p[2]])
+
+        def glsl(self):
+                return &#39;abs(p.x&#39; + cond_subtract(self.x) + &#39;) / p.w&#39;
+
+        def glsl_col(self):
+                return make_color(self)
+
+class YPlane:
+        def __init__(self, x=0.0, color=(1,1,1)):
+                self.x = set_global_float(x)
+                self.color = color
+
+        def DE(self, p):
+                x = get_global(self.x)
+                return abs(p[1] - x) / p[3]
+
+        def NP(self, p):
+                x = get_global(self.x)
+                return np.array([p[0], x, p[2]])
+
+        def glsl(self):
+                return &#39;abs(p.y&#39; + cond_subtract(self.x) + &#39;) / p.w&#39;
+
+        def glsl_col(self):
+                return make_color(self)
+
+class ZPlane:
+        def __init__(self, x=0.0, color=(1,1,1)):
+                self.x = set_global_float(x)
+                self.color = color
+
+        def DE(self, p):
+                x = get_global(self.x)
+                return abs(p[2] - x) / p[3]
+
+        def NP(self, p):
+                x = get_global(self.x)
+                return np.array([p[0], p[1], x])
+
+        def glsl(self):
+                return &#39;abs(p.z&#39; + cond_subtract(self.x) + &#39;) / p.w&#39;
+
+        def glsl_col(self):
+                return make_color(self)
+
+class XHalfSpace:
+        def __init__(self, x=0.0, color=(1,1,1)):
+                self.x = set_global_float(x)
+                self.color = color
+
+        def DE(self, p):
+                x = get_global(self.x)
+                return (p[0] - x) / p[3]
+
+        def NP(self, p):
+                x = get_global(self.x)
+                return np.array([x, p[1], p[2]])
+
+        def glsl(self):
+                return &#39;(p.x&#39; + cond_subtract(self.x) + &#39;) / p.w&#39;
+
+        def glsl_col(self):
+                return make_color(self)
+
+class YHalfSpace:
+        def __init__(self, x=0.0, color=(1,1,1)):
+                self.x = set_global_float(x)
+                self.color = color
+
+        def DE(self, p):
+                x = get_global(self.x)
+                return (p[1] - x) / p[3]
+
+        def NP(self, p):
+                x = get_global(self.x)
+                return np.array([p[0], x, p[2]])
+
+        def glsl(self):
+                return &#39;(p.y&#39; + cond_subtract(self.x) + &#39;) / p.w&#39;
+
+        def glsl_col(self):
+                return make_color(self)
+
+class ZHalfSpace:
+        def __init__(self, x=0.0, color=(1,1,1)):
+                self.x = set_global_float(x)
+                self.color = color
+
+        def DE(self, p):
+                x = get_global(self.x)
+                return (p[2] - x) / p[3]
+
+        def NP(self, p):
+                x = get_global(self.x)
+                return np.array([p[0], p[1], x])
+
+        def glsl(self):
+                return &#39;(p.z&#39; + cond_subtract(self.x) + &#39;) / p.w&#39;
+
+        def glsl_col(self):
+                return make_color(self)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pyspace.geo.Box"><code class="flex name class">
+<span>class <span class="ident">Box</span></span>
+<span>(</span><span>s=(1, 1, 1), c=(0, 0, 0), color=(1, 1, 1))</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Box:
+        def __init__(self, s=(1,1,1), c=(0,0,0), color=(1,1,1)):
+                self.s = set_global_vec3(s)
+                self.c = set_global_vec3(c)
+                self.color = color
+
+        def DE(self, p):
+                c = get_global(self.c)
+                s = get_global(self.s)
+                a = np.abs(p[:3] - c) - s;
+                return (min(max(a[0], a[1], a[2]), 0.0) + np.linalg.norm(np.maximum(a,0.0))) / p[3]
+
+        def NP(self, p):
+                c = get_global(self.c)
+                s = get_global(self.s)
+                return np.clip(p[:3] - c, -s, s) + c
+
+        def glsl(self):
+                return &#39;de_box(p&#39; + cond_offset(self.c) + &#39;, &#39; + vec3_str(self.s) + &#39;)&#39;
+
+        def glsl_col(self):
+                return make_color(self)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.geo.Box.DE"><code class="name flex">
+<span>def <span class="ident">DE</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def DE(self, p):
+        c = get_global(self.c)
+        s = get_global(self.s)
+        a = np.abs(p[:3] - c) - s;
+        return (min(max(a[0], a[1], a[2]), 0.0) + np.linalg.norm(np.maximum(a,0.0))) / p[3]</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.Box.NP"><code class="name flex">
+<span>def <span class="ident">NP</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def NP(self, p):
+        c = get_global(self.c)
+        s = get_global(self.s)
+        return np.clip(p[:3] - c, -s, s) + c</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.Box.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;de_box(p&#39; + cond_offset(self.c) + &#39;, &#39; + vec3_str(self.s) + &#39;)&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.Box.glsl_col"><code class="name flex">
+<span>def <span class="ident">glsl_col</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl_col(self):
+        return make_color(self)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.geo.InfCross"><code class="flex name class">
+<span>class <span class="ident">InfCross</span></span>
+<span>(</span><span>r=1.0, c=(0, 0, 0), color=(1, 1, 1))</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class InfCross:
+        def __init__(self, r=1.0, c=(0,0,0), color=(1,1,1)):
+                self.r = set_global_float(r)
+                self.c = set_global_vec3(c)
+                self.color = color
+
+        def DE(self, p):
+                r = get_global(self.r)
+                c = get_global(self.c)
+                sq = (p[:3] - c) * (p[:3] - c)
+                return (math.sqrt(min(min(sq[0] + sq[1], sq[0] + sq[2]), sq[1] + sq[2])) - r) / p[3]
+
+        def NP(self, p):
+                r = get_global(self.r)
+                c = get_global(self.c)
+                n = p[:3] - c
+                m_ix = np.argmax(np.abs(n))
+                n[m_ix] = 0.0
+                n = normalize(n) * r
+                n[m_ix] = p[m_ix] - c[m_ix]
+                return n + c
+
+        def glsl(self):
+                return &#39;de_inf_cross(p&#39; + cond_offset(self.c) + &#39;, &#39; + float_str(self.r) + &#39;)&#39;
+
+        def glsl_col(self):
+                return make_color(self)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.geo.InfCross.DE"><code class="name flex">
+<span>def <span class="ident">DE</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def DE(self, p):
+        r = get_global(self.r)
+        c = get_global(self.c)
+        sq = (p[:3] - c) * (p[:3] - c)
+        return (math.sqrt(min(min(sq[0] + sq[1], sq[0] + sq[2]), sq[1] + sq[2])) - r) / p[3]</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.InfCross.NP"><code class="name flex">
+<span>def <span class="ident">NP</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def NP(self, p):
+        r = get_global(self.r)
+        c = get_global(self.c)
+        n = p[:3] - c
+        m_ix = np.argmax(np.abs(n))
+        n[m_ix] = 0.0
+        n = normalize(n) * r
+        n[m_ix] = p[m_ix] - c[m_ix]
+        return n + c</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.InfCross.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;de_inf_cross(p&#39; + cond_offset(self.c) + &#39;, &#39; + float_str(self.r) + &#39;)&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.InfCross.glsl_col"><code class="name flex">
+<span>def <span class="ident">glsl_col</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl_col(self):
+        return make_color(self)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.geo.InfCrossXY"><code class="flex name class">
+<span>class <span class="ident">InfCrossXY</span></span>
+<span>(</span><span>r=1.0, c=(0, 0, 0), color=(1, 1, 1))</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class InfCrossXY:
+        def __init__(self, r=1.0, c=(0,0,0), color=(1,1,1)):
+                self.r = set_global_float(r)
+                self.c = set_global_vec3(c)
+                self.color = color
+
+        def DE(self, p):
+                r = get_global(self.r)
+                c = get_global(self.c)
+                sq = (p[:3] - c) * (p[:3] - c)
+                return (math.sqrt(min(sq[0], sq[1]) + sq[2]) - r) / p[3]
+
+        def NP(self, p):
+                r = get_global(self.r)
+                c = get_global(self.c)
+                n = p[:3] - c
+                m_ix = (0 if abs(n[0]) &gt; abs(n[1]) else 1)
+                n[m_ix] = 0.0
+                n = normalize(n) * r
+                n[m_ix] = p[m_ix] - c[m_ix]
+                return n + c
+
+        def glsl(self):
+                return &#39;de_inf_cross_xy(p&#39; + cond_offset(self.c) + &#39;, &#39; + float_str(self.r) + &#39;)&#39;
+
+        def glsl_col(self):
+                return make_color(self)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.geo.InfCrossXY.DE"><code class="name flex">
+<span>def <span class="ident">DE</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def DE(self, p):
+        r = get_global(self.r)
+        c = get_global(self.c)
+        sq = (p[:3] - c) * (p[:3] - c)
+        return (math.sqrt(min(sq[0], sq[1]) + sq[2]) - r) / p[3]</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.InfCrossXY.NP"><code class="name flex">
+<span>def <span class="ident">NP</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def NP(self, p):
+        r = get_global(self.r)
+        c = get_global(self.c)
+        n = p[:3] - c
+        m_ix = (0 if abs(n[0]) &gt; abs(n[1]) else 1)
+        n[m_ix] = 0.0
+        n = normalize(n) * r
+        n[m_ix] = p[m_ix] - c[m_ix]
+        return n + c</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.InfCrossXY.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;de_inf_cross_xy(p&#39; + cond_offset(self.c) + &#39;, &#39; + float_str(self.r) + &#39;)&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.InfCrossXY.glsl_col"><code class="name flex">
+<span>def <span class="ident">glsl_col</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl_col(self):
+        return make_color(self)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.geo.InfLine"><code class="flex name class">
+<span>class <span class="ident">InfLine</span></span>
+<span>(</span><span>r=1.0, n=(1, 0, 0), c=(0, 0, 0), color=(1, 1, 1))</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class InfLine:
+        def __init__(self, r=1.0, n=(1,0,0), c=(0,0,0), color=(1,1,1)):
+                self.r = set_global_float(r)
+                self.n = set_global_vec3(n)
+                self.c = set_global_vec3(c)
+                self.color = color
+
+        def DE(self, p):
+                r = get_global(self.r)
+                n = get_global(self.n)
+                c = get_global(self.c)
+                q = p[:3] - c
+                return (np.linalg.norm(q - n*np.dot(n,q)) - r) / p[3]
+
+        def NP(self, p):
+                r = get_global(self.r)
+                c = get_global(self.c)
+                n = p[:3] - c
+                m_ix = (0 if abs(n[0]) &gt; abs(n[1]) else 1)
+                n[m_ix] = 0.0
+                n = normalize(n) * r
+                n[m_ix] = p[m_ix] - c[m_ix]
+                return n + c
+
+        def glsl(self):
+                return &#39;de_inf_line(p&#39; + cond_offset(self.c) + &#39;, &#39; + vec3_str(self.n) + &#39;, &#39; + float_str(self.r) + &#39;)&#39;
+
+        def glsl_col(self):
+                return make_color(self)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.geo.InfLine.DE"><code class="name flex">
+<span>def <span class="ident">DE</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def DE(self, p):
+        r = get_global(self.r)
+        n = get_global(self.n)
+        c = get_global(self.c)
+        q = p[:3] - c
+        return (np.linalg.norm(q - n*np.dot(n,q)) - r) / p[3]</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.InfLine.NP"><code class="name flex">
+<span>def <span class="ident">NP</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def NP(self, p):
+        r = get_global(self.r)
+        c = get_global(self.c)
+        n = p[:3] - c
+        m_ix = (0 if abs(n[0]) &gt; abs(n[1]) else 1)
+        n[m_ix] = 0.0
+        n = normalize(n) * r
+        n[m_ix] = p[m_ix] - c[m_ix]
+        return n + c</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.InfLine.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;de_inf_line(p&#39; + cond_offset(self.c) + &#39;, &#39; + vec3_str(self.n) + &#39;, &#39; + float_str(self.r) + &#39;)&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.InfLine.glsl_col"><code class="name flex">
+<span>def <span class="ident">glsl_col</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl_col(self):
+        return make_color(self)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.geo.Sphere"><code class="flex name class">
+<span>class <span class="ident">Sphere</span></span>
+<span>(</span><span>r=1.0, c=(0, 0, 0), color=(1, 1, 1))</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Sphere:
+        def __init__(self, r=1.0, c=(0,0,0), color=(1,1,1)):
+                self.r = set_global_float(r)
+                self.c = set_global_vec3(c)
+                self.color = color
+
+        def DE(self, p):
+                c = get_global(self.c)
+                r = get_global(self.r)
+                return (np.linalg.norm(p[:3] - c) - r) / p[3]
+
+        def NP(self, p):
+                c = get_global(self.c)
+                r = get_global(self.r)
+                return normalize(p[:3] - c) * r + c
+
+        def glsl(self):
+                return &#39;de_sphere(p&#39; + cond_offset(self.c) + &#39;, &#39; + float_str(self.r) + &#39;)&#39;
+
+        def glsl_col(self):
+                return make_color(self)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.geo.Sphere.DE"><code class="name flex">
+<span>def <span class="ident">DE</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def DE(self, p):
+        c = get_global(self.c)
+        r = get_global(self.r)
+        return (np.linalg.norm(p[:3] - c) - r) / p[3]</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.Sphere.NP"><code class="name flex">
+<span>def <span class="ident">NP</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def NP(self, p):
+        c = get_global(self.c)
+        r = get_global(self.r)
+        return normalize(p[:3] - c) * r + c</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.Sphere.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;de_sphere(p&#39; + cond_offset(self.c) + &#39;, &#39; + float_str(self.r) + &#39;)&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.Sphere.glsl_col"><code class="name flex">
+<span>def <span class="ident">glsl_col</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl_col(self):
+        return make_color(self)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.geo.Tetrahedron"><code class="flex name class">
+<span>class <span class="ident">Tetrahedron</span></span>
+<span>(</span><span>r=1.0, c=(0, 0, 0), color=(1, 1, 1))</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Tetrahedron:
+        def __init__(self, r=1.0, c=(0,0,0), color=(1,1,1)):
+                self.r = set_global_float(r)
+                self.c = set_global_vec3(c)
+                self.color = color
+
+        def DE(self, p):
+                c = get_global(self.c)
+                r = get_global(self.r)
+                a = p[:3] - c
+                md = max(-a[0] - a[1] - a[2], a[0] + a[1] - a[2], -a[0] + a[1] + a[2], a[0] - a[1] + a[2])
+                return (md - r) / (p[3] * math.sqrt(3.0));
+
+        def NP(self, p):
+                raise Exception(&#34;Not implemented&#34;)
+
+        def glsl(self):
+                return &#39;de_tetrahedron(p&#39; + cond_offset(self.c) + &#39;, &#39; + float_str(self.r) + &#39;)&#39;
+
+        def glsl_col(self):
+                return make_color(self)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.geo.Tetrahedron.DE"><code class="name flex">
+<span>def <span class="ident">DE</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def DE(self, p):
+        c = get_global(self.c)
+        r = get_global(self.r)
+        a = p[:3] - c
+        md = max(-a[0] - a[1] - a[2], a[0] + a[1] - a[2], -a[0] + a[1] + a[2], a[0] - a[1] + a[2])
+        return (md - r) / (p[3] * math.sqrt(3.0));</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.Tetrahedron.NP"><code class="name flex">
+<span>def <span class="ident">NP</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def NP(self, p):
+        raise Exception(&#34;Not implemented&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.Tetrahedron.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;de_tetrahedron(p&#39; + cond_offset(self.c) + &#39;, &#39; + float_str(self.r) + &#39;)&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.Tetrahedron.glsl_col"><code class="name flex">
+<span>def <span class="ident">glsl_col</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl_col(self):
+        return make_color(self)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.geo.XHalfSpace"><code class="flex name class">
+<span>class <span class="ident">XHalfSpace</span></span>
+<span>(</span><span>x=0.0, color=(1, 1, 1))</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class XHalfSpace:
+        def __init__(self, x=0.0, color=(1,1,1)):
+                self.x = set_global_float(x)
+                self.color = color
+
+        def DE(self, p):
+                x = get_global(self.x)
+                return (p[0] - x) / p[3]
+
+        def NP(self, p):
+                x = get_global(self.x)
+                return np.array([x, p[1], p[2]])
+
+        def glsl(self):
+                return &#39;(p.x&#39; + cond_subtract(self.x) + &#39;) / p.w&#39;
+
+        def glsl_col(self):
+                return make_color(self)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.geo.XHalfSpace.DE"><code class="name flex">
+<span>def <span class="ident">DE</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def DE(self, p):
+        x = get_global(self.x)
+        return (p[0] - x) / p[3]</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.XHalfSpace.NP"><code class="name flex">
+<span>def <span class="ident">NP</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def NP(self, p):
+        x = get_global(self.x)
+        return np.array([x, p[1], p[2]])</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.XHalfSpace.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;(p.x&#39; + cond_subtract(self.x) + &#39;) / p.w&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.XHalfSpace.glsl_col"><code class="name flex">
+<span>def <span class="ident">glsl_col</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl_col(self):
+        return make_color(self)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.geo.XPlane"><code class="flex name class">
+<span>class <span class="ident">XPlane</span></span>
+<span>(</span><span>x=0.0, color=(1, 1, 1))</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class XPlane:
+        def __init__(self, x=0.0, color=(1,1,1)):
+                self.x = set_global_float(x)
+                self.color = color
+
+        def DE(self, p):
+                x = get_global(self.x)
+                return abs(p[0] - x) / p[3]
+
+        def NP(self, p):
+                x = get_global(self.x)
+                return np.array([x, p[1], p[2]])
+
+        def glsl(self):
+                return &#39;abs(p.x&#39; + cond_subtract(self.x) + &#39;) / p.w&#39;
+
+        def glsl_col(self):
+                return make_color(self)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.geo.XPlane.DE"><code class="name flex">
+<span>def <span class="ident">DE</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def DE(self, p):
+        x = get_global(self.x)
+        return abs(p[0] - x) / p[3]</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.XPlane.NP"><code class="name flex">
+<span>def <span class="ident">NP</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def NP(self, p):
+        x = get_global(self.x)
+        return np.array([x, p[1], p[2]])</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.XPlane.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;abs(p.x&#39; + cond_subtract(self.x) + &#39;) / p.w&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.XPlane.glsl_col"><code class="name flex">
+<span>def <span class="ident">glsl_col</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl_col(self):
+        return make_color(self)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.geo.YHalfSpace"><code class="flex name class">
+<span>class <span class="ident">YHalfSpace</span></span>
+<span>(</span><span>x=0.0, color=(1, 1, 1))</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class YHalfSpace:
+        def __init__(self, x=0.0, color=(1,1,1)):
+                self.x = set_global_float(x)
+                self.color = color
+
+        def DE(self, p):
+                x = get_global(self.x)
+                return (p[1] - x) / p[3]
+
+        def NP(self, p):
+                x = get_global(self.x)
+                return np.array([p[0], x, p[2]])
+
+        def glsl(self):
+                return &#39;(p.y&#39; + cond_subtract(self.x) + &#39;) / p.w&#39;
+
+        def glsl_col(self):
+                return make_color(self)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.geo.YHalfSpace.DE"><code class="name flex">
+<span>def <span class="ident">DE</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def DE(self, p):
+        x = get_global(self.x)
+        return (p[1] - x) / p[3]</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.YHalfSpace.NP"><code class="name flex">
+<span>def <span class="ident">NP</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def NP(self, p):
+        x = get_global(self.x)
+        return np.array([p[0], x, p[2]])</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.YHalfSpace.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;(p.y&#39; + cond_subtract(self.x) + &#39;) / p.w&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.YHalfSpace.glsl_col"><code class="name flex">
+<span>def <span class="ident">glsl_col</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl_col(self):
+        return make_color(self)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.geo.YPlane"><code class="flex name class">
+<span>class <span class="ident">YPlane</span></span>
+<span>(</span><span>x=0.0, color=(1, 1, 1))</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class YPlane:
+        def __init__(self, x=0.0, color=(1,1,1)):
+                self.x = set_global_float(x)
+                self.color = color
+
+        def DE(self, p):
+                x = get_global(self.x)
+                return abs(p[1] - x) / p[3]
+
+        def NP(self, p):
+                x = get_global(self.x)
+                return np.array([p[0], x, p[2]])
+
+        def glsl(self):
+                return &#39;abs(p.y&#39; + cond_subtract(self.x) + &#39;) / p.w&#39;
+
+        def glsl_col(self):
+                return make_color(self)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.geo.YPlane.DE"><code class="name flex">
+<span>def <span class="ident">DE</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def DE(self, p):
+        x = get_global(self.x)
+        return abs(p[1] - x) / p[3]</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.YPlane.NP"><code class="name flex">
+<span>def <span class="ident">NP</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def NP(self, p):
+        x = get_global(self.x)
+        return np.array([p[0], x, p[2]])</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.YPlane.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;abs(p.y&#39; + cond_subtract(self.x) + &#39;) / p.w&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.YPlane.glsl_col"><code class="name flex">
+<span>def <span class="ident">glsl_col</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl_col(self):
+        return make_color(self)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.geo.ZHalfSpace"><code class="flex name class">
+<span>class <span class="ident">ZHalfSpace</span></span>
+<span>(</span><span>x=0.0, color=(1, 1, 1))</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ZHalfSpace:
+        def __init__(self, x=0.0, color=(1,1,1)):
+                self.x = set_global_float(x)
+                self.color = color
+
+        def DE(self, p):
+                x = get_global(self.x)
+                return (p[2] - x) / p[3]
+
+        def NP(self, p):
+                x = get_global(self.x)
+                return np.array([p[0], p[1], x])
+
+        def glsl(self):
+                return &#39;(p.z&#39; + cond_subtract(self.x) + &#39;) / p.w&#39;
+
+        def glsl_col(self):
+                return make_color(self)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.geo.ZHalfSpace.DE"><code class="name flex">
+<span>def <span class="ident">DE</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def DE(self, p):
+        x = get_global(self.x)
+        return (p[2] - x) / p[3]</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.ZHalfSpace.NP"><code class="name flex">
+<span>def <span class="ident">NP</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def NP(self, p):
+        x = get_global(self.x)
+        return np.array([p[0], p[1], x])</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.ZHalfSpace.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;(p.z&#39; + cond_subtract(self.x) + &#39;) / p.w&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.ZHalfSpace.glsl_col"><code class="name flex">
+<span>def <span class="ident">glsl_col</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl_col(self):
+        return make_color(self)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspace.geo.ZPlane"><code class="flex name class">
+<span>class <span class="ident">ZPlane</span></span>
+<span>(</span><span>x=0.0, color=(1, 1, 1))</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ZPlane:
+        def __init__(self, x=0.0, color=(1,1,1)):
+                self.x = set_global_float(x)
+                self.color = color
+
+        def DE(self, p):
+                x = get_global(self.x)
+                return abs(p[2] - x) / p[3]
+
+        def NP(self, p):
+                x = get_global(self.x)
+                return np.array([p[0], p[1], x])
+
+        def glsl(self):
+                return &#39;abs(p.z&#39; + cond_subtract(self.x) + &#39;) / p.w&#39;
+
+        def glsl_col(self):
+                return make_color(self)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspace.geo.ZPlane.DE"><code class="name flex">
+<span>def <span class="ident">DE</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def DE(self, p):
+        x = get_global(self.x)
+        return abs(p[2] - x) / p[3]</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.ZPlane.NP"><code class="name flex">
+<span>def <span class="ident">NP</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def NP(self, p):
+        x = get_global(self.x)
+        return np.array([p[0], p[1], x])</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.ZPlane.glsl"><code class="name flex">
+<span>def <span class="ident">glsl</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl(self):
+        return &#39;abs(p.z&#39; + cond_subtract(self.x) + &#39;) / p.w&#39;</code></pre>
+</details>
+</dd>
+<dt id="pyspace.geo.ZPlane.glsl_col"><code class="name flex">
+<span>def <span class="ident">glsl_col</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def glsl_col(self):
+        return make_color(self)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pyspace" href="index.html">pyspace</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pyspace.geo.Box" href="#pyspace.geo.Box">Box</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.geo.Box.DE" href="#pyspace.geo.Box.DE">DE</a></code></li>
+<li><code><a title="pyspace.geo.Box.NP" href="#pyspace.geo.Box.NP">NP</a></code></li>
+<li><code><a title="pyspace.geo.Box.glsl" href="#pyspace.geo.Box.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.geo.Box.glsl_col" href="#pyspace.geo.Box.glsl_col">glsl_col</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.geo.InfCross" href="#pyspace.geo.InfCross">InfCross</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.geo.InfCross.DE" href="#pyspace.geo.InfCross.DE">DE</a></code></li>
+<li><code><a title="pyspace.geo.InfCross.NP" href="#pyspace.geo.InfCross.NP">NP</a></code></li>
+<li><code><a title="pyspace.geo.InfCross.glsl" href="#pyspace.geo.InfCross.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.geo.InfCross.glsl_col" href="#pyspace.geo.InfCross.glsl_col">glsl_col</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.geo.InfCrossXY" href="#pyspace.geo.InfCrossXY">InfCrossXY</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.geo.InfCrossXY.DE" href="#pyspace.geo.InfCrossXY.DE">DE</a></code></li>
+<li><code><a title="pyspace.geo.InfCrossXY.NP" href="#pyspace.geo.InfCrossXY.NP">NP</a></code></li>
+<li><code><a title="pyspace.geo.InfCrossXY.glsl" href="#pyspace.geo.InfCrossXY.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.geo.InfCrossXY.glsl_col" href="#pyspace.geo.InfCrossXY.glsl_col">glsl_col</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.geo.InfLine" href="#pyspace.geo.InfLine">InfLine</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.geo.InfLine.DE" href="#pyspace.geo.InfLine.DE">DE</a></code></li>
+<li><code><a title="pyspace.geo.InfLine.NP" href="#pyspace.geo.InfLine.NP">NP</a></code></li>
+<li><code><a title="pyspace.geo.InfLine.glsl" href="#pyspace.geo.InfLine.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.geo.InfLine.glsl_col" href="#pyspace.geo.InfLine.glsl_col">glsl_col</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.geo.Sphere" href="#pyspace.geo.Sphere">Sphere</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.geo.Sphere.DE" href="#pyspace.geo.Sphere.DE">DE</a></code></li>
+<li><code><a title="pyspace.geo.Sphere.NP" href="#pyspace.geo.Sphere.NP">NP</a></code></li>
+<li><code><a title="pyspace.geo.Sphere.glsl" href="#pyspace.geo.Sphere.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.geo.Sphere.glsl_col" href="#pyspace.geo.Sphere.glsl_col">glsl_col</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.geo.Tetrahedron" href="#pyspace.geo.Tetrahedron">Tetrahedron</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.geo.Tetrahedron.DE" href="#pyspace.geo.Tetrahedron.DE">DE</a></code></li>
+<li><code><a title="pyspace.geo.Tetrahedron.NP" href="#pyspace.geo.Tetrahedron.NP">NP</a></code></li>
+<li><code><a title="pyspace.geo.Tetrahedron.glsl" href="#pyspace.geo.Tetrahedron.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.geo.Tetrahedron.glsl_col" href="#pyspace.geo.Tetrahedron.glsl_col">glsl_col</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.geo.XHalfSpace" href="#pyspace.geo.XHalfSpace">XHalfSpace</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.geo.XHalfSpace.DE" href="#pyspace.geo.XHalfSpace.DE">DE</a></code></li>
+<li><code><a title="pyspace.geo.XHalfSpace.NP" href="#pyspace.geo.XHalfSpace.NP">NP</a></code></li>
+<li><code><a title="pyspace.geo.XHalfSpace.glsl" href="#pyspace.geo.XHalfSpace.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.geo.XHalfSpace.glsl_col" href="#pyspace.geo.XHalfSpace.glsl_col">glsl_col</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.geo.XPlane" href="#pyspace.geo.XPlane">XPlane</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.geo.XPlane.DE" href="#pyspace.geo.XPlane.DE">DE</a></code></li>
+<li><code><a title="pyspace.geo.XPlane.NP" href="#pyspace.geo.XPlane.NP">NP</a></code></li>
+<li><code><a title="pyspace.geo.XPlane.glsl" href="#pyspace.geo.XPlane.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.geo.XPlane.glsl_col" href="#pyspace.geo.XPlane.glsl_col">glsl_col</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.geo.YHalfSpace" href="#pyspace.geo.YHalfSpace">YHalfSpace</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.geo.YHalfSpace.DE" href="#pyspace.geo.YHalfSpace.DE">DE</a></code></li>
+<li><code><a title="pyspace.geo.YHalfSpace.NP" href="#pyspace.geo.YHalfSpace.NP">NP</a></code></li>
+<li><code><a title="pyspace.geo.YHalfSpace.glsl" href="#pyspace.geo.YHalfSpace.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.geo.YHalfSpace.glsl_col" href="#pyspace.geo.YHalfSpace.glsl_col">glsl_col</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.geo.YPlane" href="#pyspace.geo.YPlane">YPlane</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.geo.YPlane.DE" href="#pyspace.geo.YPlane.DE">DE</a></code></li>
+<li><code><a title="pyspace.geo.YPlane.NP" href="#pyspace.geo.YPlane.NP">NP</a></code></li>
+<li><code><a title="pyspace.geo.YPlane.glsl" href="#pyspace.geo.YPlane.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.geo.YPlane.glsl_col" href="#pyspace.geo.YPlane.glsl_col">glsl_col</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.geo.ZHalfSpace" href="#pyspace.geo.ZHalfSpace">ZHalfSpace</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.geo.ZHalfSpace.DE" href="#pyspace.geo.ZHalfSpace.DE">DE</a></code></li>
+<li><code><a title="pyspace.geo.ZHalfSpace.NP" href="#pyspace.geo.ZHalfSpace.NP">NP</a></code></li>
+<li><code><a title="pyspace.geo.ZHalfSpace.glsl" href="#pyspace.geo.ZHalfSpace.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.geo.ZHalfSpace.glsl_col" href="#pyspace.geo.ZHalfSpace.glsl_col">glsl_col</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspace.geo.ZPlane" href="#pyspace.geo.ZPlane">ZPlane</a></code></h4>
+<ul class="">
+<li><code><a title="pyspace.geo.ZPlane.DE" href="#pyspace.geo.ZPlane.DE">DE</a></code></li>
+<li><code><a title="pyspace.geo.ZPlane.NP" href="#pyspace.geo.ZPlane.NP">NP</a></code></li>
+<li><code><a title="pyspace.geo.ZPlane.glsl" href="#pyspace.geo.ZPlane.glsl">glsl</a></code></li>
+<li><code><a title="pyspace.geo.ZPlane.glsl_col" href="#pyspace.geo.ZPlane.glsl_col">glsl_col</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
